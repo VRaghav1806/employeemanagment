@@ -2,10 +2,14 @@
   "name": "employee-manager-dashboard",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev:server": "nodemon backend/server.js",
     "start": "node backend/server.js",
-    "build": "npm run build --prefix frontend"
+    "build": "npm run build -w frontend"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

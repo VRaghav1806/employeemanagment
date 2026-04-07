@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Login } from './components/Login.jsx';
 import { Dashboard } from './components/Dashboard.jsx';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE = '/api';
 
 async function apiRequest(path, options = {}, token) {
   const headers = {

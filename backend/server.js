@@ -46,3 +46,5 @@ mongoose
     }
   });
 
+module.exports = app;
+

@@ -9,7 +9,7 @@
   "scripts": {
     "dev:server": "nodemon backend/server.js",
     "start": "node backend/server.js",
-    "build": "npm install && npm run build --workspace=frontend"
+    "build": "npm install && npm run build -w frontend"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

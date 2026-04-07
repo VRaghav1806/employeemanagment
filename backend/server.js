@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const employeeRoutes = require('./routes/employees');
@@ -24,11 +25,31 @@ app.use('/api/employees', employeeRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
+// Static file serving from frontend/dist
+const distPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(distPath));
+
+// SPA catch-all route (should be after API routes)
+app.get('*', (req, res) => {
+  if (req.url.startsWith('/api')) {
+    return res.status(404).json({ message: 'API route not found' });
+  }
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/manager_dashboard';
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.warn('⚠️ WARNING: MONGO_URI is not set. Falling back to local MongoDB.');
+} else {
+  console.log('ℹ️ Found MONGO_URI in environment. Connecting to Atlas...');
+}
+
+const connectionString = MONGO_URI || 'mongodb://localhost:27017/manager_dashboard';
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(connectionString)
   .then(() => {
     console.log('✅ MongoDB connected successfully');
     app.listen(PORT, () => {
